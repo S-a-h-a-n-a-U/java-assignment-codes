@@ -6,7 +6,7 @@ public class Highestneighbour{
             for(int i=1;i<arr.length-1;i++){
                 if(arr[i]>arr[i - 1]&&arr[i]>arr[i + 1]){
                     System.out.println("Highest element in the array which is greater than its neighbours is: "+arr[i]);
-                    found = true;
+                    found=true;
                     break;
                 }
             }
