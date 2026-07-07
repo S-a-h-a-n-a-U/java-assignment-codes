@@ -2,44 +2,55 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.math.BigDecimal;
-public class Main{
+public class Main {
+    interface SwapOperation{
+        void swap(NumberPair pair);
+    }
+    static class NumberPair{
+        BigDecimal first;
+        BigDecimal second;
+        NumberPair(BigDecimal first,BigDecimal second){
+            this.first=first;
+            this.second=second;
+        }
+    }
+    static class SwapUsingTemp implements SwapOperation{
+        public void swap(NumberPair pair){
+            BigDecimal temp=pair.first;
+            pair.first=pair.second;
+            pair.second=temp;
+        }
+    }
+    static class SwapWithoutTemp implements SwapOperation{
+        public void swap(NumberPair pair){
+            pair.first=pair.first.add(pair.second);
+            pair.second=pair.first.subtract(pair.second);
+            pair.first=pair.first.subtract(pair.second);
+        }
+    }
     public static void main(String[] args){
         Scanner sc=new Scanner(System.in);
         try{
-            System.out.print("Enter array size: ");
-            int n=sc.nextInt();
-            if(n<=0){
-                System.out.println("Invalid array size.");
-                return;
-            }
-            BigDecimal[] arr=new BigDecimal[n];
-            System.out.println("Enter "+n+" elements:");
-            for(int i=0;i<n;i++)
-                arr[i]=sc.nextBigDecimal();
-            boolean found=false;
-            if(n==1){
-                System.out.println("Peak Element : "+arr[0].stripTrailingZeros().toPlainString());
-                return;
-            }
-            if(arr[0].compareTo(arr[1])>0){
-                System.out.println("Peak Element : "+arr[0].stripTrailingZeros().toPlainString()+" at index 0");
-                found=true;
-            }
-            for(int i=1;i<n-1;i++){
-                if(arr[i].compareTo(arr[i-1])>0 && arr[i].compareTo(arr[i+1])>0){
-                    System.out.println("Peak Element : "+arr[i].stripTrailingZeros().toPlainString()+" at index "+i);
-                    found=true;
-                }
-            }
-            if(arr[n-1].compareTo(arr[n-2])>0){
-                System.out.println("Peak Element : "+arr[n-1].stripTrailingZeros().toPlainString()+" at index "+(n-1));
-                found=true;
-            }
-            if(!found)
-                System.out.println("No peak element found.");
+            System.out.print("Enter first number: ");
+            BigDecimal first=sc.nextBigDecimal();
+            System.out.print("Enter second number: ");
+            BigDecimal second=sc.nextBigDecimal();
+            NumberPair pair1=new NumberPair(first,second);
+            SwapOperation obj1=new SwapUsingTemp();
+            obj1.swap(pair1);
+            System.out.println("\nAfter Swapping Using Temp Variable");
+            System.out.println("First Number : "+pair1.first.stripTrailingZeros().toPlainString());
+            System.out.println("Second Number : "+pair1.second.stripTrailingZeros().toPlainString());
+            NumberPair pair2=new NumberPair(first,second);
+            SwapOperation obj2=new SwapWithoutTemp();
+            obj2.swap(pair2);
+            System.out.println("\nAfter Swapping Without Temp Variable");
+            System.out.println("First Number : "+pair2.first.stripTrailingZeros().toPlainString());
+            System.out.println("Second Number : "+pair2.second.stripTrailingZeros().toPlainString());
+
         }
         catch(InputMismatchException e){
-            System.out.println("Invalid input.");
+            System.out.println("Invalid input. Please enter a valid number.");
         }
         catch(NoSuchElementException e){
             System.out.println("No input provided.");
