@@ -1,32 +1,87 @@
-public class Binarysearch {
-    public static void main(String[] args) {
-        try {
-            int[] arr = {2, 4, 6, 8, 10, 12, 14};
-            int key = 10;
-            int low = 0;
-            int high = arr.length - 1;
-            int found = -1;
-            while (low <= high) {
-                int mid = (low + high) / 2;
-                if (arr[mid] == key) {
-                    found = mid;
+import java.util.Scanner;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
+import java.math.BigInteger;
+public class BinarySearch{
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        try{
+            System.out.print("Enter array size: ");
+            int n=sc.nextInt();
+            if(n<=0){
+                System.out.println("Invalid array size.");
+                return;
+            }
+            BigInteger[] arr=new BigInteger[n];
+            System.out.println("Enter "+n+" sorted elements:");
+            for(int i=0;i<n;i++){
+                arr[i]=sc.nextBigInteger();
+            }
+            boolean sorted=true;
+            for(int i=0;i<n-1;i++){
+                if(arr[i].compareTo(arr[i+1])>0){
+                    sorted=false;
                     break;
-                } else if (arr[mid] < key) {
-                    low = mid + 1;
-                } else {
-                    high = mid - 1;
-                    }}
-            if (found == -1) {
-                System.out.println("element not found");
-            } else {
-                System.out.println("element found at index " + found);
-            }}
-          catch (NullPointerException e) {
-                System.out.println("Error: Array is null.");}
-         catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Error: Array index is out of bounds.");}
-        catch (Exception e) {
-            System.out.println("unexpected error occurred: " + e.getMessage());
+                }
+            }
+            if(!sorted){
+                System.out.println("Array is not sorted.Binary Search requires a sorted array.");
+                return;
+            }
+            System.out.print("Enter element to search: ");
+            BigInteger key=sc.nextBigInteger();
+            int low=0;
+            int high=n-1;
+            int found=-1;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if(arr[mid].compareTo(key)==0){
+                    found=mid;
+                    break;
+                }
+                else if(arr[mid].compareTo(key)<0){
+                    low=mid+1;
+                }
+                else{
+                    high=mid-1;
+                }
+            }
+            if(found==-1){
+                System.out.println("Element not found.");
+            }
+            else{
+                int first=found;
+                while(first>0 && arr[first-1].compareTo(key)==0){
+                    first--;
+                }
+                int last=found;
+                while(last<n-1 && arr[last+1].compareTo(key)==0){
+                    last++;
+                }
+                System.out.print("Element found at index: ");
+                for(int i=first;i<=last;i++){
+                    System.out.print(i+" ");
+                }
+                System.out.println();
+            }
+        }
+        catch(InputMismatchException e){
+            System.out.println("Invalid input. Please enter valid integers for the array size and valid numbers for the elements.");
+        }
+        catch(NoSuchElementException e){
+            System.out.println("No input provided.");
+        }
+        catch(IllegalStateException e){
+            System.out.println("Scanner is closed.");
+        }
+        catch(OutOfMemoryError e){
+            System.out.println("Array size is too large for available memory.");
+        }
+        catch(Exception e){
+            System.out.println("Unexpected error: "+e.getMessage());
+        }
+        finally{
+            sc.close();
         }
     }
 }
