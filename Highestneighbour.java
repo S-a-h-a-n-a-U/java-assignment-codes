@@ -1,27 +1,60 @@
-public class Highestneighbour{
+import java.util.Scanner;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
+import java.math.BigDecimal;
+public class Main{
     public static void main(String[] args){
-        try {
-            int[] arr={2,4,9,6,8,27};
+        Scanner sc=new Scanner(System.in);
+        try{
+            System.out.print("Enter array size: ");
+            int n=sc.nextInt();
+            if(n<=0){
+                System.out.println("Invalid array size.");
+                return;
+            }
+            BigDecimal[] arr=new BigDecimal[n];
+            System.out.println("Enter "+n+" elements:");
+            for(int i=0;i<n;i++)
+                arr[i]=sc.nextBigDecimal();
             boolean found=false;
-            for(int i=1;i<arr.length-1;i++){
-                if(arr[i]>arr[i - 1]&&arr[i]>arr[i + 1]){
-                    System.out.println("Highest element in the array which is greater than its neighbours is: "+arr[i]);
+            if(n==1){
+                System.out.println("Peak Element : "+arr[0].stripTrailingZeros().toPlainString());
+                return;
+            }
+            if(arr[0].compareTo(arr[1])>0){
+                System.out.println("Peak Element : "+arr[0].stripTrailingZeros().toPlainString()+" at index 0");
+                found=true;
+            }
+            for(int i=1;i<n-1;i++){
+                if(arr[i].compareTo(arr[i-1])>0 && arr[i].compareTo(arr[i+1])>0){
+                    System.out.println("Peak Element : "+arr[i].stripTrailingZeros().toPlainString()+" at index "+i);
                     found=true;
-                    break;
                 }
             }
-            if(!found){
-                System.out.println("no element is greater than both of its neighbours.");
+            if(arr[n-1].compareTo(arr[n-2])>0){
+                System.out.println("Peak Element : "+arr[n-1].stripTrailingZeros().toPlainString()+" at index "+(n-1));
+                found=true;
             }
-        } 
-        catch(NullPointerException e){
-            System.out.println("error: Array is null.");
+            if(!found)
+                System.out.println("No peak element found.");
         }
-        catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("error: Array index is out of bounds.");
-        } 
-        catch (Exception e){
-            System.out.println("unexpected error occurred: "+e.getMessage());
+        catch(InputMismatchException e){
+            System.out.println("Invalid input.");
+        }
+        catch(NoSuchElementException e){
+            System.out.println("No input provided.");
+        }
+        catch(IllegalStateException e){
+            System.out.println("Scanner is closed.");
+        }
+        catch(OutOfMemoryError e){
+            System.out.println("System is out of memory.");
+        }
+        catch(Exception e){
+            System.out.println("Unexpected error : "+e.getMessage());
+        }
+        finally{
+            sc.close();
         }
     }
 }
