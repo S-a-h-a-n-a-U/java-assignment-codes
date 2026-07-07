@@ -1,24 +1,52 @@
-import java.util.Arrays;
-public class Mergearray{
+import java.util.Scanner;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
+import java.math.BigInteger;
+public class OddEvenCheck{
     public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
         try{
-            int[] arr1={1,5,9,10,15,20};
-            int[] arr2={2,3,8,13};
-            for(int i=arr2.length-1;i>=0;i--){
-                int last=arr1[arr1.length-1];
-                int j;
-                for(j=arr1.length-2;j>=0&&arr1[j]>arr2[i];j--){
-                    arr1[j+1]=arr1[j];
-                }
-                if(j!=arr1.length-2||last>arr2[i]){
-                    arr1[j+1]=arr2[i];
-                    arr2[i]=last;
-                }
+            System.out.print("Enter array size: ");
+            int n=sc.nextInt();
+            if(n<=0){
+                System.out.println("Invalid array size.");
+                return;
             }
-            System.out.println("array 1: "+Arrays.toString(arr1));
-            System.out.println("array 2: "+Arrays.toString(arr2));
-        }catch(Exception e){
-            System.out.println("exception: "+e);
+            BigInteger[] arr=new BigInteger[n];
+            int odd=0;
+            int even=0;
+            System.out.println("Enter "+n+" integers:");
+            for(int i=0;i<n;i++){
+                arr[i]=sc.nextBigInteger();
+                if(arr[i].mod(BigInteger.valueOf(2)).equals(BigInteger.ZERO))
+                    even++;
+                else
+                    odd++;
+            }
+            if(odd==n)
+                System.out.println("The list contains only odd numbers.");
+            else if(even==n)
+                System.out.println("The list contains only even numbers.");
+            else
+                System.out.println("The list contains both odd and even numbers.");
+        }
+        catch(InputMismatchException e){
+            System.out.println("Invalid input enter valid integers.");
+        }
+        catch(NoSuchElementException e){
+            System.out.println("no input provided.");
+        }
+        catch(IllegalStateException e){
+            System.out.println("Scanner is closed.");
+        }
+        catch(OutOfMemoryError e){
+            System.out.println("System is out of memory.");
+        }
+        catch(Exception e){
+            System.out.println("Unexpected error: "+e.getMessage());
+        }
+        finally{
+            sc.close();
         }
     }
 }
