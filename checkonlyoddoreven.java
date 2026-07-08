@@ -1,8 +1,9 @@
 import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
-public class OddEvenCheck{
+public class Main{
     public static void main(String[] args){
         Scanner sc=new Scanner(System.in);
         try{
@@ -12,29 +13,50 @@ public class OddEvenCheck{
                 System.out.println("Invalid array size.");
                 return;
             }
-            BigInteger[] arr=new BigInteger[n];
-            int odd=0;
-            int even=0;
-            System.out.println("Enter "+n+" integers:");
+            BigDecimal[] arr=new BigDecimal[n];
+            int odd=0,even=0,decimal=0;
+            System.out.println("Enter "+n+" numbers:");
             for(int i=0;i<n;i++){
-                arr[i]=sc.nextBigInteger();
-                if(arr[i].mod(BigInteger.valueOf(2)).equals(BigInteger.ZERO))
-                    even++;
-                else
-                    odd++;
+                arr[i]=sc.nextBigDecimal();
+
+                if(arr[i].stripTrailingZeros().scale()>0){
+                    decimal++;
+                }else{
+                    BigInteger num=arr[i].toBigInteger();
+
+                    if(num.mod(BigInteger.valueOf(2)).equals(BigInteger.ZERO))
+                        even++;
+                    else
+                        odd++;
+                }
             }
-            if(odd==n)
-                System.out.println("The list contains only odd numbers.");
-            else if(even==n)
-                System.out.println("The list contains only even numbers.");
-            else
-                System.out.println("The list contains both odd and even numbers.");
+            if(decimal==n){
+                System.out.println("The list contains only decimal numbers. Decimal numbers are neither odd nor even.");
+            }
+            else if(decimal>0){
+                System.out.println("The list contains decimal numbers, which are neither odd nor even.");
+
+                if(odd>0&&even>0)
+                    System.out.println("Among the integer values, both odd and even numbers are present.");
+                else if(odd>0)
+                    System.out.println("Among the integer values, only odd numbers are present.");
+                else if(even>0)
+                    System.out.println("Among the integer values, only even numbers are present.");
+            }
+            else{
+                if(even==n)
+                    System.out.println("The list contains only even numbers.");
+                else if(odd==n)
+                    System.out.println("The list contains only odd numbers.");
+                else
+                    System.out.println("The list contains both odd and even numbers.");
+            }
         }
         catch(InputMismatchException e){
-            System.out.println("Invalid input enter valid integers.");
+            System.out.println("Invalid input. Please enter valid numbers.");
         }
         catch(NoSuchElementException e){
-            System.out.println("no input provided.");
+            System.out.println("No input provided.");
         }
         catch(IllegalStateException e){
             System.out.println("Scanner is closed.");
