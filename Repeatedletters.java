@@ -1,7 +1,7 @@
 import java.util.Scanner;
-import java.util.NoSuchElementException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 public class RepeatedLetters{
     public static void main(String[] args){
         Scanner sc=new Scanner(System.in);
@@ -15,12 +15,11 @@ public class RepeatedLetters{
             str=str.toLowerCase();
             LinkedHashMap<Character,Integer> map=new LinkedHashMap<>();
             for(char ch:str.toCharArray()){
-                if(ch==' ')
-                    continue;
-                map.put(ch,map.getOrDefault(ch,0)+1);
+                if(Character.isLetter(ch))
+                    map.put(ch,map.getOrDefault(ch,0)+1);
             }
             boolean found=false;
-            System.out.println("Repeated characters and their occurrences:");
+            System.out.println("Repeated letters and their occurrences:");
             for(Map.Entry<Character,Integer> entry:map.entrySet()){
                 if(entry.getValue()>1){
                     System.out.println(entry.getKey()+" : "+entry.getValue());
@@ -28,7 +27,7 @@ public class RepeatedLetters{
                 }
             }
             if(!found)
-                System.out.println("No repeated characters found.");
+                System.out.println("No repeated letters found.");
         }
         catch(NoSuchElementException e){
             System.out.println("No input provided.");
